@@ -20,3 +20,6 @@
 - [Understanding accessibility as lived experience: the case of walking and cycling in Porto Alegre, Brazil](https://www.tandfonline.com/doi/full/10.1080/23792949.2023.2290155#abstract)
 
 - [Socioeconomic variations and disparity in space–time accessibility in suburban China: A case study of Guangzhou](https://journals.sagepub.com/doi/abs/10.1177/0042098020916416)
+
+<!-- Adicionar a planilha -->
+- [Understanding urban community structure at multiple levels through crowd mobility](https://www.sciencedirect.com/science/article/abs/pii/S0264275125006018)
