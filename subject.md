@@ -5,11 +5,12 @@
 
 - Uma estrutura conceitual para o desenvolvimento de um indicador de acessibilidade para além do (fator?) tempo de deslocamento
 
-- Uma metodologia para a criação de um indicador de acessiblidade multifatorial (multi aspecto)
+- Uma metodologia para a criação de um indicador de acessibilidade multifatorial (multi aspecto)
 
 ## Objetivos
 Formular um indicador de acessibilidade que leve em conta:
 - tempos médios de acesso
-- fatores socioeconômicos e culturais
 - morfologia
 - eventos atípicos
+
+- fatores socioeconômicos e culturais
