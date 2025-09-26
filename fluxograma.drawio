@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0" version="28.2.3">
+  <diagram name="Página-1" id="83Aev-WqNt86ZnO0m742">
+    <mxGraphModel dx="1371" dy="729" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jXqYggf7924rBLlVNvxc-1" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Recortes socioeconômicos&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="380" width="430" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jXqYggf7924rBLlVNvxc-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="jXqYggf7924rBLlVNvxc-2" target="jXqYggf7924rBLlVNvxc-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jXqYggf7924rBLlVNvxc-2" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Morfologia&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="347.5" y="160" width="155" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jXqYggf7924rBLlVNvxc-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="jXqYggf7924rBLlVNvxc-3" target="jXqYggf7924rBLlVNvxc-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jXqYggf7924rBLlVNvxc-3" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Eventos atípicos&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="347.5" y="50" width="155" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jXqYggf7924rBLlVNvxc-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="jXqYggf7924rBLlVNvxc-4" target="jXqYggf7924rBLlVNvxc-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jXqYggf7924rBLlVNvxc-4" value="&lt;div&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;Tempos de Acesso&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="347.5" y="270" width="155" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
