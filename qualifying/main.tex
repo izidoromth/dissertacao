@@ -1,0 +1,123 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+% \usepackage{hyperref}
+\usepackage{graphicx,url}
+\usepackage[brazil]{babel}
+% \usepackage[latin1]{inputenc}
+\usepackage{acro}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{svg}
+\usepackage{pdfpages}
+
+\pagestyle{plain} % Numeração centralizada no rodapé
+\pagenumbering{arabic} % Formato 1, 2, 3...
+
+\newcommand{\ric}[1]{\textcolor{magenta}{#1}}
+\newcommand{\mth}[1]{\textcolor{red}{#1}}
+\newcommand{\hide}[1]{}
+
+\DeclareAcronym{ippuc}{
+  short=Ippuc,
+  long=Instituto de Pesquisa e Planejamento Urbano de Curitiba,
+}
+
+\DeclareAcronym{pois}{
+  short=POIs,
+  long=Pontos de Interesse,
+}
+
+\DeclareAcronym{idhm}{
+  short=IDHM,
+  long=Índice de Desenvolvimento Humano Municipal,
+}
+
+\DeclareAcronym{ipea}{
+  short=Ipea,
+  long=Instituto de Pesquisa Econômica Aplicada
+}
+
+\DeclareAcronym{ols}{
+  short=MQO,
+  long=Mínimos Quadrados Ordinários,
+}
+
+\DeclareAcronym{pca}{
+  short=PCA,
+  long=Análise de Componentes Principais,
+}
+
+\DeclareAcronym{ise}{
+  short=ISE,
+  long=indicadores socioeconômicos
+}
+
+\DeclareAcronym{PT}{
+  short=PT,
+  long=\textit{Proximity Time}
+}
+
+\DeclareAcronym{PTh}{
+  short=PTh,
+  long=Tempo de Acesso por Hexágono
+}
+
+\DeclareAcronym{SIG}{
+  short=SIG,
+  long=Sistemas de Informação Geográfica
+}
+
+\sloppy
+\title{Framework para Avaliação da Acessibilidade Urbana de Curta Distância sob Perturbações Climáticas}
+%\title{Framework para Análise da Acessibilidade em Redes de Deslocamento sob Perturbações Climáticas}
+%\title{Avaliação da Acessibilidade na Mobilidade de Curta Distância em Redes Urbanas sob Perturbações Climáticas}
+
+\author{Matheus I. de Almeida\inst{1}, Ricardo Lüders\inst{1}, Luiz Gomes-Jr\inst{1}}
+
+
+\address{Universidade Tecnológica Federal do Paraná (UTFPR)\\
+  Curitiba -- PR -- Brazil
+%\nextinstitute
+%  Department of Computer Science -- University of Durham\\
+%  Durham, U.K.
+% \nextinstitute
+%  Departamento de Sistemas e Computação\\
+%  Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  \email{matheusalmeida@alunos.utfpr.edu.br,\{luders,lcjunior\}@utfpr.edu.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+% \begin{abstract}
+% \end{abstract}
+     
+\begin{resumo}
+Este trabalho propõe um framework para avaliação da acessibilidade de curta distância sob perturbações climáticas na rede urbana de deslocamentos. A cidade é modelada como um sistema espacial discreto composto por uma malha de unidades territoriais, um conjunto de pontos de interesse e uma rede de deslocamentos estruturada como um grafo ponderado. A partir dessa estrutura, são estimados tempos de acesso aos serviços cotidianos considerando dois cenários distintos: a topologia típica da rede de deslocamentos e uma topologia condicionada por variáveis ambientais. Neste último caso, os pesos das arestas do grafo são modificados por uma função de penalização que representa os efeitos das condicionantes climáticas sobre a mobilidade. A comparação entre os indicadores de acessibilidade obtidos nesses cenários, associada à integração de dados socioeconômicos, permite analisar como variáveis climáticas podem afetar os padrões de acessibilidade da população aos pontos de interesse urbanos e como esses impactos se distribuem espacialmente entre diferentes recortes populacionais.
+\end{resumo}
+
+% \input{sections/1.introduction}
+% \input{sections/2.related_work}
+% \input{sections/3.methodology}
+% \input{sections/4.results}
+% \input{sections/5.considerations}
+
+\input{sections/1.introduction}
+\input{sections/2.fundamentals}
+\input{sections/3.methodology}
+\input{sections/4.planning}
+\input{sections/5.results}
+
+\bibliographystyle{sbc}
+\bibliography{refs}
+
+\newpage
+\input{sections/apendices}
+
+\end{document}

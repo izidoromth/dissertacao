@@ -1,0 +1,193 @@
+\section{Fundamentos e Trabalhos Relacionados}
+Esta seção descreve os fundamentos teóricos e discute trabalhos
+relacionados.
+
+\subsection{Acessibilidade Urbana}
+
+Em estudos urbanos e de transportes, acessibilidade urbana descreve a facilidade em alcançar oportunidades (serviços, empregos, equipamentos e atividades) a partir de um local de origem. Diferente de mobilidade (movimento observado), acessibilidade é uma propriedade estrutural do sistema urbano: depende de onde as oportunidades estão, de como a rede conecta origens e destinos e de quais impedâncias (custos) são impostas ao deslocamento~\cite{Handy1997Measuring}. Assim, ela é frequentemente tratada como uma medida de potencial de acesso, e não como uma medida direta de viagens realizadas.
+
+Formalizando o problema matematicamente e espacialmente, o território pode ser representado por um conjunto de origens $O$ (por exemplo, células territoriais, centróides de setores, quadras ou pontos de residência) e um conjunto de destinos $D$ (pontos de interesse, POIs). Define-se então uma função de custo $c(o,d)$ que associa a cada par $(o,d)$ o custo mínimo de deslocamento entre $o \in O$ e $d \in D$~\cite{Miller1999Measuring}. Em aplicações baseadas em rede, esse custo é tipicamente obtido por algoritmos de caminho mínimo em um grafo de deslocamento (por exemplo, tempo de caminhada ou ciclismo), e serve de base para construir indicadores comparáveis entre diferentes áreas e cenários.
+
+Embora frequentemente expresso como tempo ou distância, o custo $c(o,d)$ pode ser entendido de forma mais geral como uma impedância composta, incorporando fatores como conforto, segurança, esforço físico e confiabilidade do percurso~\cite{Puello2016Integration}. Esse ponto é particularmente importante para mobilidade ativa~\cite{Cook2022More} em curta distância, na qual a experiência do percurso e condições locais (declividade, travessias, qualidade de calçadas, exposição ao sol/chuva/vento, presença de alagamentos) podem alterar a viabilidade do deslocamento mesmo quando a geometria da rede permanece a mesma. Dessa forma, perturbações climáticas podem ser incorporadas ao problema como alterações no custo generalizado de deslocamento, e não apenas como bloqueios binários de segmentos.
+
+Dentro das medidas de acessibilidade baseadas em localização, revisões como a de \cite{Geurs2004} indicam que é comum organizar os indicadores em famílias segundo seus pressupostos: (i) medidas de distância (ou custo mínimo), (ii) medidas cumulativas (ou de contorno) e (iii) medidas potenciais (ou gravitacionais). Essas famílias diferem na forma como tratam a escolha de destinos, a substituibilidade entre oportunidades e o papel do decaimento com a distância/tempo, mas compartilham a ideia central de que a acessibilidade é derivada de uma matriz de custos origem-destino.
+
+As medidas mais simples são as métricas de distância, nas quais a acessibilidade de uma origem é representada pelo custo mínimo até a oportunidade mais próxima (por exemplo, o tempo até o comércio mais próximo). Esse indicador é intuitivo e útil quando se assume que usuários tendem a satisfazer a necessidade no destino mais fácil de alcançar; por outro lado, ele ignora a existência de múltiplas alternativas, não representa competição entre ofertas e pode ser instável quando pequenas mudanças na rede fazem com que mude também o POI mais próximo.
+
+Quando a disponibilidade de múltiplas oportunidades está em jogo, usam-se medidas cumulativas (de contorno), que contam quantas oportunidades estão acessíveis dentro de um limiar de custo (por exemplo, número de POIs em até 15 minutos). Uma variação útil quando se deseja evitar a escolha de um limiar fixo --- e, ao mesmo tempo, manter a interpretação intuitiva --- é calcular a acessibilidade a partir do custo médio para acessar as $N$ oportunidades mais próximas, por categoria de serviço. Assim, a métrica passa a representar a "facilidade média" de alcançar um conjunto mínimo de alternativas relevantes, o que se alinha com deslocamentos de curta distância em que a população costuma ter um conjunto pequeno de opções efetivamente consideradas.
+
+Apesar de sua clareza, métricas cumulativas e variantes por $N$ vizinhos carregam escolhas operacionais que afetam o resultado: o valor do limiar (quando existe), o valor de $N$, a sensibilidade a empates e a forma como oportunidades são ponderadas (todas iguais ou com pesos). Além disso, tais medidas tendem a tratar o custo como um corte abrupto (dentro/fora do conjunto acessível) ou como uma média simples, o que pode sub-representar mudanças graduais na atratividade de destinos à medida que o custo aumenta. Em cenários de perturbação climática, nos quais o custo pode se alterar de forma contínua e espacialmente desigual, torna-se útil empregar formulações que penalizem destinos mais distantes de modo progressivo, sem depender de um corte rígido.
+
+Nas métricas potenciais (ou gravitacionais), a acessibilidade é calculada como a soma das oportunidades ponderadas por uma função de decaimento do custo, capturando a ideia de que destinos mais distantes contribuem menos para a acessibilidade do que destinos próximos. A formulação clássica, de \cite{Hansen1959}, expressa a acessibilidade de uma origem $o$ como
+\begin{equation}
+A(o) = \sum_{d \in D} W_d \, f\!\big(c(o,d)\big),
+\end{equation}
+onde $W_d$ representa a massa ou atratividade da oportunidade no destino $d$ (por exemplo, capacidade, tamanho ou um peso unitário) e $f\!\big(c(o,d)\big)$ é uma função decrescente que reduz a contribuição à medida que o custo aumenta. Na prática, não é necessário considerar todos os destinos: é comum restringir o conjunto a uma vizinhança relevante (por exemplo, os $N$ destinos mais próximos ou destinos dentro de uma janela de custo), preservando o princípio do decaimento e evitando que oportunidades muito distantes tenham influência indevida ou que o indicador fique computacionalmente pesado.
+
+A função de decaimento $f(c)$ pode assumir diferentes formas (exponencial, potência, logística), e seus parâmetros controlam o quanto a acessibilidade cai com o aumento do custo. Conceitualmente, isso permite aproximar diferentes comportamentos de escolha e diferentes tolerâncias ao deslocamento, e operacionalmente, esses parâmetros podem ser calibrados a partir de literatura, dados observados ou análises de sensibilidade. Para mobilidade ativa em curta distância, funções com decaimento relativamente forte tendem a ser coerentes com a queda rápida na propensão a caminhar/pedalar conforme o custo aumenta, especialmente quando o custo incorpora desconforto ambiental.
+
+No quadro conceitual mais amplo, a acessibilidade resulta da interação entre componentes de uso do solo (onde estão as oportunidades), transporte (rede e impedâncias), temporalidade (variações por horário/estação/evento) e características individuais (restrições e preferências). Este trabalho foca principalmente na componente de transporte/impedância ao comparar um cenário típico, em que os custos derivam da topologia e dos pesos usuais da rede, e um cenário condicionado por perturbações climáticas, no qual os pesos das arestas são penalizados por variáveis ambientais. Mantendo constantes (ou controladas) as oportunidades e a representação espacial das origens, a diferença entre os indicadores nos dois cenários passa a expressar a sensibilidade/robustez da acessibilidade frente a perturbações climáticas.
+
+Diante dessas definições, diferentes métricas têm sido propostas para sintetizar e comparar o acesso às oportunidades no ambiente urbano. Entre elas, destacam-se indicadores que permitem descrever o nível de acessibilidade em cada área da cidade e avaliar a distribuição desse acesso entre a população.
+
+\subsubsection{Indicadores de Acessibilidade em Curta Distância}
+\label{subsubsec:indicadores}
+
+Para calcular a acessibilidade urbana a serviços cotidianos, \cite{Bruno2024} utilizam um conjunto de indicadores territoriais e de desigualdade, baseados em uma malha espacial regular como unidade mínima de análise.
+
+\paragraph{PTh (Proximity Time por unidade territorial):} Tempo médio necessário para 
+alcançar os $k$ pontos de interesse mais próximos de uma categoria de serviço \ric{$i$}?, a partir 
+de cada célula territorial:
+
+\begin{equation}
+    PTh_i = \frac{1}{k} \sum_{d \in D_k(i)} c(i,d),
+\end{equation}
+
+\noindent onde $D_k(i)$ é o conjunto dos $k$ POIs mais próximos e $c(i,d)$ é o tempo 
+mínimo de deslocamento na rede. O parâmetro $k$ é ajustável conforme o contexto 
+($k=1$ para saúde de emergência; $k=2$ ou $k=3$ para educação e comércio). Menores 
+valores de PTh indicam maior acessibilidade. Calculado para cada célula, PTh organiza-se 
+como uma camada espacial, revelando gradientes territoriais e padrões de concentração 
+de oportunidades.
+
+\paragraph{Índice G (desigualdade de acessibilidade):} Coeficiente de Gini que mede 
+como a acessibilidade é distribuída entre territórios ou grupos socioeconômicos. 
+Varia de 0 (igualdade perfeita) a 1 (desigualdade máxima). Valores mais altos indicam 
+maior concentração de má acessibilidade em parcelas específicas da população. É 
+particularmente útil para comparar como a distribuição de acessibilidade muda entre 
+cenários, revelando se perturbações ambientais amplificam ou reduzem desigualdades.
+
+\paragraph{F15 (Fração da população em zonas de 15 minutos):} Proporção da população
+residente em células onde PTh $\leq$ 15 minutos:
+
+\begin{equation}
+    F15 = \frac{\sum_i p_i \cdot \mathbb{1}(PTh_i \leq 15)}{\sum_i p_i} \times 100\%,
+\end{equation}
+
+\noindent onde $\mathbb{1}(\cdot)$ é uma função indicadora e $p_i$ representa a população residente na unidade territorial $i$. Diferencia-se de PTh por 
+ser binária (dentro ou fora do limiar) e é utilizada complementarmente para avaliar 
+cobertura de população sob o modelo de cidade de 15 minutos.
+
+\subsection{Grafos e Redes de Mobilidade}
+
+Em termos de formalização e modelagem da acessibilidade, o custo mínimo $c(o,d)$ é geralmente obtido a partir de uma rede de deslocamento representada como um grafo ponderado $G=(V,E)$. Nessa representação, os vértices $V$ correspondem a pontos de decisão na malha viária (como interseções e nós topológicos), enquanto as arestas $E$ representam segmentos percorríveis (ruas, passagens e conexões). A cada aresta $e \in E$ associa-se um peso $w(e)$, que codifica o esforço necessário para atravessá-la.
+
+Em muitos contextos, a rede pode ser tratada como não-direcionada, isto é, assumindo-se que o deslocamento ao longo de um segmento possui custo equivalente em ambos os sentidos. Contudo, há situações em que a impedância depende do sentido de percurso, o que torna adequada a representação por um grafo direcionado, permitindo custos distintos para cada orientação de uma mesma conexão (por exemplo, devido a declividade, escadas, travessias controladas ou restrições de circulação). Essa distinção é relevante porque altera o conjunto de caminhos viáveis considerados no cálculo de $c(o,d)$.
+
+No caso de caminhadas, uma modelagem simples e amplamente utilizada define $w(e)$ como o tempo de percurso, estimado a partir do comprimento geométrico do segmento e de uma velocidade de caminhada assumida. Em formulações mais gerais, o peso pode ser interpretado como custo generalizado, incorporando penalidades adicionais relacionadas à qualidade do ambiente. Com isso, o custo entre uma origem $o$ e um destino $d$ é dado pelo custo do menor caminho na rede, isto é, pela soma mínima dos pesos ao longo de um caminho viável:
+\begin{equation}
+    c(o,d) = \min_{p} \sum_{e \in p} w(e),
+\end{equation}
+com $p \in \mathcal{P}(o,d)$, o conjunto de caminhos possíveis entre $o$ e $d$. Do ponto de vista algorítmico, esse valor pode ser calculado por métodos clássicos de caminhos mínimos, como o algoritmo de Dijkstra \cite{cormen01introduction}, ou variantes com heurística, como $A^*$, dependendo das propriedades do grafo e dos requisitos de desempenho da aplicação.
+
+De forma geral, mudanças nas condições de deslocamento podem ser representadas na rede tanto como alterações contínuas de impedância quanto como restrições de circulação que tornam determinados segmentos indisponíveis. Em ambos os casos, modificam-se os caminhos viáveis entre origens e destinos e, consequentemente, os custos mínimos estimados, podendo inclusive ocorrer situações em que não exista um caminho viável conectando um par $(o,d)$
+
+Para que origens e destinos sejam avaliados na rede, também é necessário definir como esses pontos são conectados ao grafo. Em aplicações urbanas, pontos de interesse e origens representadas por centróides de zonas ou unidades territoriais são tipicamente associados ao nó ou segmento mais próximo (procedimentos de \textit{snapping}), ou então conectados por arestas artificiais que representam o acesso local à rede. Essa etapa, embora operacional, influencia os custos mínimos estimados e deve ser consistente entre cenários para garantir comparabilidade.
+
+\subsection{Trabalhos Relacionados}
+
+\subsubsection{Acessibilidade Baseada em Redes e Pontos de Interesse}
+
+Este trabalho se insere na linha de pesquisas que avaliam a acessibilidade urbana a partir de redes de deslocamento e da distribuição de oportunidades na cidade. Nessa direção, \cite{Bruno2024} propõem uma metodologia para estimar tempos de acesso a pontos de interesse 
+cotidianos a partir de uma malha espacial hexagonal, produzindo indicadores locais por unidade 
+territorial e métricas agregadas em nível de cidade, incluindo o tempo médio de acesso aos 
+pontos de interesse mais próximos e sínteses ponderadas pela população residente. 
+
+É comum em análises de acessibilidade urbana utilizar métricas gravitacionais, usando por exemplo o número de oportunidades de emprego em um recorte territorial como sendo a atratividade daquela região. Neste sentido, \cite{PRITCHARD2019386} desenvolveram um modelo de acessibilidade potencial 
+baseado na forma gravitacional de \cite{Hansen1959}, utilizando função de 
+decaimento exponencial negativo ponderada por oportunidades (empregos). 
+Essa abordagem permite capturar comportamentos de mobilidade ao dar maior peso 
+a oportunidades próximas, diferenciando-se de medidas cumulativas que tratam 
+todas as viagens dentro de um intervalo de tempo como igualmente acessíveis. 
+A metodologia deste trabalho adota abordagem similar, mas estende a noção de 
+custo generalizado para incorporar perturbações climáticas como fatores de 
+impedância contínuos.
+
+\subsubsection{Acessibilidade sob Perturbações Ambientais}
+
+Em trabalhos que avaliam os impactos de perturbações, é comum modelar a degradação das redes de deslocamento por meio da remoção de trechos intransitáveis, quantificando a consequente fragmentação da rede e o aumento dos custos de deslocamento. Nesse sentido, \cite{Loreti2022} analisam a rede rodoviária entre centros urbanos, removendo trechos comprometidos durante inundações e avaliando como isso afeta a acessibilidade entre localidades, permitindo identificar situações de isolamento. Ainda nesse contexto, \cite{Abenayake2022An} propõem uma metodologia para avaliar falhas do sistema de transporte ao comparar uma condição de referência não inundada com eventos reais de inundação. O método sobrepõe a rede viária às áreas inundadas e assume que segmentos afetados tornam-se inacessíveis, recalculando métricas de centralidade (\textit{closeness} e \textit{betweenness}) para caracterizar mudanças topológicas e funcionais no desempenho da rede. Em escala intraurbana, \cite{Bono2011A} combinam conceitos de grafos e análise espacial em \ac{SIG} para modelar interrupções viárias pós-desastre (terremotos), identificar a fragmentação em componentes conectados e estimar a redução de acessibilidade comparando os custos de deslocamento obtidos para a rede sem modificações e danificada.
+
+Contrastando com essas abordagens de remoção binária, estudos recentes 
+demonstraram que perturbações climáticas frequentemente aumentam custos de 
+deslocamento de forma contínua e espacialmente variável, sem necessariamente 
+remover segmentos da rede. Uma contribuição metodológica importante é a modelagem de variabilidade 
+espacial de custos de deslocamento. \cite{PRITCHARD2019386} incorporam 
+topografia (inclinação), infraestrutura, tempos de espera e congestionamento para 
+estimar velocidades realistas de ciclistas e pedestres em diferentes segmentos. De 
+forma análoga, este trabalho modela como perturbações climáticas aumentam custos de deslocamento através de funções de penalização 
+que refletem a degradação da experiência do pedestre, em vez de simplesmente 
+remover segmentos da rede.
+
+\subsubsection{Equidade e Desigualdade em Acessibilidade}
+
+A acessibilidade urbana é tradicionalmente avaliada por métricas que privilegiam 
+a eficiência agregada das redes, desconsiderando desigualdades socioespaciais. 
+\cite{FolGallez2014} demonstram que essa abordagem falha em capturar barreiras 
+de populações vulneráveis. Nesse contexto, estudos recentes adotam medidas de 
+cobertura em zonas de 15 minutos combinadas com indicadores de desigualdade, 
+como o índice de Gini \cite{Bruno2024}. Este trabalho segue essa direção ao 
+examinar agrupamentos intraurbanos com tempos de acesso e condições socioeconômicas semelhantes, investigando como perturbações 
+climáticas amplificam desigualdades pré-existentes.
+
+Estudos recentes começaram a integrar análise ambiental com equidade em zonas de 
+15 minutos. \cite{smartcities8020053} examinam disparidades de exposição a poluição 
+do ar dentro de zonas de 15 minutos em Nova York, revelando como comunidades de 
+baixa renda e populações negras experimentam níveis significativamente mais altos 
+de poluentes em seus alcances de caminhada, demonstrando
+a importância de integrar análise de rede com equidade socioeconômica.
+
+Nessa mesma direção, estudos começaram a investigar como perturbações climáticas 
+agudas interagem com vulnerabilidade social em zonas de 15 minutos. \cite{Shartova2024} 
+investigou a vulnerabilidade térmica em Moscou durante ondas de calor de 2021, 
+revelando que áreas com alto stress térmico não coincidem necessariamente com alta 
+vulnerabilidade social, sendo as zonas residenciais novas (que possuem baixa infraestrutura 
+verde) as mais vulneráveis. Contudo, nenhum desses trabalhos examina como 
+perturbações climáticas degradam a acessibilidade a serviços essenciais comparando cenários, nem incorpora funções de custo contínuas que reflitam como pedestres 
+vivenciam a degradação ambiental --- lacunas que este trabalho busca preencher.
+
+Para medir desigualdades, \cite{PRITCHARD2019386} utilizam o 
+coeficiente de Gini e aplicam técnicas de clusterização para identificar regiões com diferentes níveis de acessibilidade. Um achado crítico é que melhorias em acessibilidade por bicicleta 
+concentram-se em áreas de renda média-alta, deixando áreas periféricas e 
+pobres com ganhos mínimos. Isso sugere que perturbações ambientais, como 
+eventos climáticos extremos, provavelmente amplificam desigualdades 
+pré-existentes, pressuposto que este trabalho investiga.
+
+\subsubsection{Síntese comparativa da literatura}
+
+\hide{\ric{Precisa citar e explicar a Tabela~\ref{tab:trabalhos_relacionados} no texto. Por exemplo, a Tabela~\ref{tab:trabalhos_relacionados} resume alguns dos trabalhos relacionados segundo o tipo de interdição da malha viária causada pela condição ambiental. Neste caso, pode haver a simples interdição ou uma penalização de caminhos... Além disso, os trabalhos podem considerar ou não a condição econômica da população afetada.}}
+
+A Tabela~\ref{tab:trabalhos_relacionados} apresenta uma síntese dos principais trabalhos revisados segundo o tipo de efeito ambiental modelado na rede viária, a abordagem em relação aos cenários de referência e perturbado, e a inclusão de análise socioeconômica. Observa-se que grande parte da literatura representa as perturbações ambientais como interdição binária de segmentos da rede, resultando em cortes abruptos de conectividade e acessibilidade. Outros estudos modelam penalizações contínuas no custo dos deslocamentos, permitindo capturar variações graduais sem desconexão completa do grafo. A associação explícita entre diferenças de acessibilidade, condições ambientais e variáveis socioeconômicas, contudo, ainda é pouco frequente. Este trabalho avança ao combinar a penalização contínua dos custos, a análise comparativa entre cenários e a integração com indicadores socioeconômicos, ampliando a capacidade de identificar vulnerabilidades territoriais frente a perturbações climáticas.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Comparação de trabalhos relacionados em acessibilidade urbana, perturbações e equidade}
+\label{tab:trabalhos_relacionados}
+\begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}p{3.7cm}|>{\centering\arraybackslash}X|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+\hline
+\textbf{Referência} &
+\textbf{Usa rede/grafo} &
+\textbf{Efeito da condição ambiental na rede} &
+\textbf{Ref. vs Perturbado} &
+\textbf{Análise socioecon.} \\
+\hline
+\cite{Bruno2024}           & Sim          & N/A                   & Não          & Não \\\hline
+\cite{Loreti2022}          & Sim          & Interdição            & Sim          & Não \\\hline
+\cite{Abenayake2022An}     & Sim          & Interdição            & Sim          & Não \\\hline
+\cite{Shartova2024}        & Não          & N/A                   & Não          & Sim \\\hline
+\cite{smartcities8020053}  & Sim          & Exposição             & Não          & Sim \\\hline
+\cite{Bono2011A}           & Sim          & Interdição            & Sim          & Não \\\hline
+\cite{PRITCHARD2019386}    & Sim          & Penalização           & Não          & Sim \\\hline
+\textbf{Este trabalho}     & \textbf{Sim} & \textbf{Penalização}  & \textbf{Sim} & \textbf{Sim} \\\hline
+\end{tabularx}
+
+\vspace{0.4em}
+\begin{minipage}{0.98\linewidth}
+\footnotesize
+\textit{Notas:} 
+% (1) \textbf{Interdição}: a condição ambiental remove/fecha segmentos, alterando a conectividade do grafo. 
+% (2) \textbf{Penalização}: a condição ambiental repondera continuamente o custo das arestas (ex.: aumento de tempo/esforço), afetando rotas e acessibilidade sem necessariamente desconectar a rede. 
+(1) \textbf{Exposição}: a condição ambiental é um atributo contínuo associado aos segmentos e é agregada como métrica de exposição dentro de uma área alcançável (ex.: 15 min), sem alterar o custo/tempo de deslocamento usado para o roteamento. 
+(2) \textbf{N/A}: o estudo não incorpora condição ambiental na modelagem de rede.
+\end{minipage}
+\end{table}
