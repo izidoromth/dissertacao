@@ -6,22 +6,40 @@ cálculo de indicadores, análise comparativa e de desigualdade.
 """
 
 from ambx.grid import generate_grid, GridFormat
+from ambx.pois import get_pois
 
 # ---------------------------------------------------------------------------
 # Parâmetros globais (futuramente via CLI ou arquivo de configuração)
 # ---------------------------------------------------------------------------
-LOCATION = "Curitiba, Parana, Brazil"
+LOCATION = "Compiegne, Hauts de France, France"
 GRID_FORMAT = GridFormat.HEXAGON
 CELL_SIZE = 500  # metros
+POI_BUFFER = 2000  # metros — captura serviços de cidades vizinhas
 
 
 def main() -> None:
     """Executa o pipeline completo de análise de acessibilidade."""
-    print(f"Gerando malha para: {LOCATION}")
+    # ------------------------------------------------------------------
+    # Stage 1a: Malha territorial
+    # ------------------------------------------------------------------
+    print(f"[1/3] Gerando malha para: {LOCATION}")
     grid = generate_grid(LOCATION, grid_format=GRID_FORMAT, cell_size=CELL_SIZE)
-    grid.to_file("test.shp")
-    print(f"  -> {len(grid)} células geradas (formato: {GRID_FORMAT.value})")
-    print(f"  -> CRS: {grid.crs}")
+    print(f"       {len(grid)} células ({GRID_FORMAT.value}, {CELL_SIZE}m)")
+
+    # ------------------------------------------------------------------
+    # Stage 1b: Pontos de Interesse
+    # ------------------------------------------------------------------
+    print(f"[2/3] Coletando POIs (buffer={POI_BUFFER}m)...")
+    pois = get_pois(LOCATION, buffer=POI_BUFFER)
+    cats = pois["category"].value_counts()
+    for cat, count in cats.items():
+        print(f"       {cat}: {count}")
+
+    # ------------------------------------------------------------------
+    # Stage 1c: Rede viária (TODO)
+    # ------------------------------------------------------------------
+    print(f"[3/3] Rede viária: (a implementar)")
+
     # TODO: próximas etapas do pipeline
 
 
