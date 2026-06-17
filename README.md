@@ -151,7 +151,7 @@ python scripts/pipeline.py
 | `grid` | ✅ | Geração de malha territorial (hexagonal e quadrada), recorte por contorno administrativo, reprojeção UTM→WGS84 |
 | `utils` | ✅ | Determinação do CRS UTM adequado à localização |
 | `pois` | ✅ | Coleta e categorização de Pontos de Interesse do OSM (saúde, educação, transporte, alimentação), com buffer para conurbações |
-| `network` | ❌ | Construção do grafo viário a partir do OSM, vinculação (snapping) dos centróides da malha à rede |
+| `network` | ✅ | Construção do grafo viário a partir do OSM, vinculação (snapping) dos centróides da malha à rede |
 | `environment` | ❌ | Carregamento de camadas ambientais raster (ex.: temperatura, altimetria) e vetoriais (ex.: manchas de inundação) |
 | `demographics` | ❌ | Compatibilização de dados censitários (setores irregulares → células da malha regular) |
 | `penalties` | ❌ | Funções de penalização ambiental sobre arestas: sobreposição raster (média de pixels), interseção vetorial, interdição total |
@@ -160,14 +160,13 @@ python scripts/pipeline.py
 | `comparison` | ❌ | Análise comparativa entre cenário típico e condicionado (Δ absoluto/relativo, mapas de calor, testes estatísticos) |
 | `inequality` | ❌ | Análise de desigualdade socioeconômica (regressão linear, agrupamento socio-espacial) |
 
-**Progresso:** 3 / 11 módulos concluídos (~27%)
+**Progresso:** 4 / 11 módulos concluídos (~36%)
 
 ### Próximos passos
 
-1. **`network`** — Construção do grafo com `osmnx.graph_from_place`, vinculação dos centroides com `osmnx.nearest_nodes`.
-2. **`environment`** — Leitura de rasters (`rasterio`) e polígonos de inundação simulados.
-3. **`routing`** — Matriz OD com `networkx.shortest_path_length` ponderado por distância.
-4. **`penalties`** — Função core do framework: `W_cond = f(W_base, C)`, combinando sobreposição raster e interseção vetorial.
+1. **`environment`** — Leitura de rasters (`rasterio`) e polígonos de inundação simulados.
+2. **`routing`** — Matriz OD com `networkx.shortest_path_length` ponderado por distância.
+3. **`penalties`** — Função core do framework: `W_cond = f(W_base, C)`, combinando sobreposição raster e interseção vetorial.
 
 ---
 
