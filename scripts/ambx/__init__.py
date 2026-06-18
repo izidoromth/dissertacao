@@ -7,6 +7,7 @@ Módulos:
     utils       : Utilitários geoespaciais (CRS UTM, geometria).
     network     : Grafo viário a partir do OpenStreetMap.
     pois        : Coleta e categorização de Pontos de Interesse.
+    routing     : Roteamento A* e matriz origem-destino.
     environment : Carregamento de camadas ambientais (raster / vetorial).
     demographics: Compatibilização de dados censitários com a malha.
     penalties   : Funções de penalização ambiental sobre arestas.
