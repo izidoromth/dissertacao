@@ -23,31 +23,39 @@ A diferença entre os indicadores de acessibilidade nos dois cenários revela **
 
 ```
 dissertacao/
+├── app/
+│   └── prototype.py            # Protótipo interativo (Streamlit)
+├── scripts/
+│   └── ambx/                   # Biblioteca principal
+│       ├── __init__.py          # Versão 0.1.0
+│       ├── grid.py              # Geração de malha territorial
+│       ├── utils.py             # Utilitários geoespaciais (CRS UTM)
+│       ├── network.py           # Grafo viário e snapping
+│       ├── pois.py              # Coleta de Pontos de Interesse
+│       └── routing.py           # Roteamento A* com paralelismo
+├── notebooks/
+│   ├── ambx_tests.ipynb        # Testes e experimentos interativos
+│   └── qualifying/
+│       ├── generate_simulated_flood_areas..ipynb
+│       └── generate_simulated_scenarios.ipynb
+├── cache/                      # Cache de requisições OSM (JSON)
 ├── docs/
 │   └── qualifying/             # Documento de qualificação (LaTeX)
 │       ├── main.tex
+│       ├── main.pdf
 │       ├── refs.bib
 │       ├── figs/
-│       └── sections/
-│           ├── 1.introduction.tex
-│           ├── 2.fundamentals.tex
-│           ├── 3.methodology.tex
-│           ├── 4.planning.tex
-│           ├── 5.results.tex
-│           └── apendices.tex
-├── scripts/
-│   ├── pipeline.py             # Entry point do pipeline completo
-│   └── ambx/                   # Biblioteca principal
-│       ├── __init__.py
-│       ├── grid.py             # Geração de malha territorial
-│       ├── pois.py             # Coleta de Pontos de Interesse
-│       └── utils.py            # Utilitários geoespaciais
-├── notebooks/
-│   ├── osmnx_tests.ipynb
-│   └── qualifying/
-│       ├── generate_simulated_flood_areas.ipynb
-│       └── generate_simulated_scenarios.ipynb
-└── requirements.txt
+│       ├── files/
+│       ├── sections/
+│       │   ├── 1.introduction.tex
+│       │   ├── 2.fundamentals.tex
+│       │   ├── 3.methodology.tex
+│       │   ├── 4.planning.tex
+│       │   ├── 5.results.tex
+│       │   └── apendices.tex
+│       └── sections_old/
+├── requirements.txt
+└── README.md
 ```
 
 ---
@@ -116,12 +124,29 @@ pip install -r requirements.txt
 - [geopandas](https://geopandas.org/) — manipulação de dados geoespaciais
 - [shapely](https://shapely.readthedocs.io/) — operações geométricas
 - [networkx](https://networkx.org/) — grafos e algoritmos de caminho mínimo
-- [pandas](https://pandas.pydata.org/) — manipulação de dados tabulares
+- [pandas](https://pandas.org/) — manipulação de dados tabulares
 - [numpy](https://numpy.org/) — computação numérica
+- [streamlit](https://streamlit.io/) — protótipo interativo
+- [folium](https://python-visualization.github.io/folium/) — mapas interativos Leaflet
+- [scikit-learn](https://scikit-learn.org/) — aprendizado de máquina
+- [scipy](https://scipy.org/) — computação científica
 
 ---
 
 ## Uso
+
+### Protótipo Interativo (Streamlit)
+
+```bash
+streamlit run app/prototype.py
+```
+
+O protótipo oferece duas visões:
+
+1. **Preparação de Dados** — vizualização da malha territorial, rede viária, POIs e snapping.
+2. **Tempos Médios (A\*)** — cálculo da matriz origem-destino com A* paralelizado e mapa de calor por tempo de acesso.
+
+### Como biblioteca Python
 
 ```python
 from ambx.grid import generate_grid, GridFormat
@@ -136,12 +161,6 @@ grid = generate_grid("Curitiba, Parana, Brazil",
 pois = get_pois("Curitiba, Parana, Brazil", buffer=2000)
 ```
 
-Ou execute o pipeline completo:
-
-```bash
-python scripts/pipeline.py
-```
-
 ---
 
 ## Status da Implementação — `ambx`
@@ -150,23 +169,23 @@ python scripts/pipeline.py
 |--------|:------:|-----------|
 | `grid` | ✅ | Geração de malha territorial (hexagonal e quadrada), recorte por contorno administrativo, reprojeção UTM→WGS84 |
 | `utils` | ✅ | Determinação do CRS UTM adequado à localização |
+| `network` | ✅ | Construção do grafo viário a partir do OSM, projeção para CRS métrico, vinculação (snapping) dos centróides da malha à rede |
 | `pois` | ✅ | Coleta e categorização de Pontos de Interesse do OSM (saúde, educação, transporte, alimentação), com buffer para conurbações |
-| `network` | ✅ | Construção do grafo viário a partir do OSM, vinculação (snapping) dos centróides da malha à rede |
-| `environment` | ❌ | Carregamento de camadas ambientais raster (ex.: temperatura, altimetria) e vetoriais (ex.: manchas de inundação) |
+| `routing` | ✅ | Roteamento A* com heurística euclidiana admissível, paralelismo via `multiprocessing.Pool`, matriz origem-destino |
+| `environment` | 🟡 | Carregamento de camadas ambientais vetoriais (Shapefile, GeoJSON, GeoPackage) com recorte espacial — testado. Raster (GeoTIFF) com recorte, reamostragem e reprojeção — implementado, **não testado**. Container ``EnvironmentLayers`` unificado |
 | `demographics` | ❌ | Compatibilização de dados censitários (setores irregulares → células da malha regular) |
 | `penalties` | ❌ | Funções de penalização ambiental sobre arestas: sobreposição raster (média de pixels), interseção vetorial, interdição total |
-| `routing` | ❌ | Cálculo de caminhos mínimos (Dijkstra / A\*) e matriz origem-destino entre todas as células e POIs |
 | `indicators` | ❌ | Cálculo dos indicadores PTh, Índice G (Gini) e F15 para cada cenário |
 | `comparison` | ❌ | Análise comparativa entre cenário típico e condicionado (Δ absoluto/relativo, mapas de calor, testes estatísticos) |
 | `inequality` | ❌ | Análise de desigualdade socioeconômica (regressão linear, agrupamento socio-espacial) |
 
-**Progresso:** 4 / 11 módulos concluídos (~36%)
+**Progresso:** 6 / 11 módulos concluídos (~55%)
 
 ### Próximos passos
 
-1. **`environment`** — Leitura de rasters (`rasterio`) e polígonos de inundação simulados.
-2. **`routing`** — Matriz OD com `networkx.shortest_path_length` ponderado por distância.
-3. **`penalties`** — Função core do framework: `W_cond = f(W_base, C)`, combinando sobreposição raster e interseção vetorial.
+1. **`penalties`** — Função core do framework: `W_cond = f(W_base, C)`, combinando sobreposição raster e interseção vetorial.
+2. **`indicators`** — Cálculo de PTh, Índice G e F15 para cada cenário.
+3. **`demographics`** — Compatibilização de dados censitários com a malha.
 
 ---
 
