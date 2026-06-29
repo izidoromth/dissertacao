@@ -67,6 +67,9 @@ class RasterLayer:
     nodata: float | None = None
     source_path: str | None = None
 
+    # TODO (não testado): as propriedades e métodos de RasterLayer
+    # ainda não foram validadas com dados reais.
+
     @property
     def shape(self) -> tuple[int, int]:
         """Dimensões do array ``(altura, largura)``."""
@@ -237,7 +240,6 @@ def load_vector(
         clip_gdf = gpd.GeoDataFrame(geometry=[clip_geometry], crs=aoi_crs)
         clip_gdf = clip_gdf.to_crs(gdf.crs)
         gdf = gpd.clip(gdf, clip_gdf)
-        gdf.to_file("/tmp/debug_load_vector/clipped.geojson", driver="GeoJSON")
 
     return VectorLayer(
         name=name,
@@ -306,6 +308,14 @@ def load_vector_from_gdf(
 
 # ---------------------------------------------------------------------------
 # Leitura de camadas raster
+# ---------------------------------------------------------------------------
+# TODO (não testado): Toda a seção de raster abaixo ainda não foi
+# testada com dados reais. Inclui:
+#   - load_raster (recorte por geometria, bounding box, reprojeção)
+#   - load_raster_from_array
+#   - raster_stats_for_geometry
+#   - sample_raster_at_points
+#   - build_environment (parte de raster_paths)
 # ---------------------------------------------------------------------------
 
 
@@ -457,6 +467,7 @@ def load_raster(
         )
 
 
+# TODO (não testado)
 def load_raster_from_array(
     data: np.ndarray,
     bounds: tuple[float, float, float, float],
@@ -519,6 +530,7 @@ def load_raster_from_array(
 # ---------------------------------------------------------------------------
 
 
+# TODO (não testado)
 def raster_stats_for_geometry(
     raster: RasterLayer,
     geometry: Polygon | gpd.GeoDataFrame,
@@ -593,6 +605,7 @@ def raster_stats_for_geometry(
     return float(stats_map.get(statistic, masked.mean()))
 
 
+# TODO (não testado)
 def sample_raster_at_points(
     raster: RasterLayer,
     points: gpd.GeoDataFrame,
@@ -704,13 +717,14 @@ def build_environment(
         aoi_geom = area_of_interest.geometry.union_all()
         aoi_crs = area_of_interest.crs
     else:
-        print(area_of_interest)
         aoi_geom = area_of_interest
         aoi_crs = None
 
     env = EnvironmentLayers(area_of_interest=aoi_geom)
 
     # Carregar rasters
+    # TODO (não testado): o carregamento de rasters em build_environment
+    # ainda não foi testado com dados reais.
     if raster_paths:
         for rpath in raster_paths:
             raster = load_raster(
