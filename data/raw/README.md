@@ -24,7 +24,7 @@ data/raw/
 | **Tema** | Suscetibilidade a inundações |
 | **Ano** | — |
 | **CRS** | EPSG:4674 (SIRGAS 2000) |
-| **Feições** | ~2.500 polígonos |
+| **Feições** | 2216 polígonos |
 | **Coluna relevante** | `classe` — `"Alto"`, `"Médio"`, `"Baixa"` |
 | **Uso no ambx** | Penalização de arestas da rede por risco de inundação |
 
@@ -36,7 +36,7 @@ data/raw/
 | **Tema** | Suscetibilidade a movimentos de massa (escorregamentos) |
 | **Ano** | — |
 | **CRS** | EPSG:4674 (SIRGAS 2000) |
-| **Feições** | ~4.800 polígonos |
+| **Feições** | 305 polígonos |
 | **Coluna relevante** | `classe` — `"Alta"`, `"Média"`, `"Baixa"` |
 | **Uso no ambx** | Penalização de arestas da rede por risco geológico |
 
